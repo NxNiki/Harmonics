@@ -1,8 +1,10 @@
-close all;clear;clc
+close all;
+clear;clc
 
 %% load brain connectivity network
 p=55;% p is the number of eignvectors %55
-Graph=Preprocess_network_data('/home/niki/Downloads/HarmonicData/DataTS.csv', '/home/niki/Downloads/HarmonicData/',p);
+Graph=Preprocess_network_data('/home/niki/Downloads/HarmonicData/DataTS.csv', ...
+    '/home/niki/Downloads/HarmonicData/',p);
 
 %% Estimating global common harmonic waves
 fprintf('Estimating global common harmonic waves!\n');

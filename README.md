@@ -1,5 +1,7 @@
 # Characterizing the Propagation Pathway of Neuropathological Events of Alzheimer's Disease Using Harmonic Wavelet Analysis
 
+This work is originally created by Jiazhou Chen.
+
 This repository contains the code that was used for the harmonic wavelets identification on brain network data.
 
 All preprocessed brain network data that were used in the analysis are available in folder "Data", including clinical information file "DataTS.cvs" and brain network file in folder "AD-Data";

@@ -13,7 +13,7 @@ files = dir(strcat(work_dir, input_dir, '/ROISignals*.mat'));
 for i = 1:length(files)
 
     load(strcat(files(i).folder, '/', files(i).name))
-    out_file_name = strcat('CorrelationMatrix', files(i).name(11:end))
+    out_file_name = strcat('CorrelationMatrix', files(i).name(11:end));
 
     CorrMatrix = corr(ROISignals);
     save(strcat(output_dir, '/', out_file_name), 'CorrMatrix')

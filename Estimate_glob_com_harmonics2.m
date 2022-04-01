@@ -1,5 +1,4 @@
-function CommonHarmonics=Estimate_glob_com_harmonics(Graph,p)
-
+function CommonHarmonics=Estimate_glob_com_harmonics2(Graph,p)
 %% Initialize common Harmonics as the average of all subject's networks
 SubjectNum=size(Graph,2);
 NodeNum=size(Graph(1).W,1);
@@ -26,34 +25,26 @@ Phi_ave=Phi_temp(:,1:p);
 lambda_1=0.005;
 gama=0.005/(lambda_1);   
 iter=1;
-maxiter = 50; % add by Xin
-
-% Phi=cell(5,1);
-Phi=cell(maxiter,1);
-
-Diff=zeros(maxiter,1);
-Diff(1)=100;
-
+Phi=cell(5,1);
+% Diff(1)=100;
+Diff = 100;
 % ObjectiveFuncValue=zeros(2,1);
-ObjectiveFuncValue=zeros(maxiter,1);
-
+ObjectiveFuncValue = 0;
 Phi{1}=Phi_ave;
 
 % Runing Algrithom   
 %while Diff(iter)>0.1&&iter<50
-while Diff(iter)>0.1&&iter<maxiter
+while Diff(1)>0.1&&iter<50 
     %Step1: Updating individual Phi
     for i=1:SubjectNum
         Graph(i).Phi{iter+1}=Calculate_IndividualPhi(Graph(i).Phi{iter},Graph(i).L,Phi{iter},lambda_1);     
     end
 
     %Step2: Updating Common Harmonics Phi    
-    Phi_k=Graph(20).Phi{iter+1}; %% ** WHY USING THE 20TH GRAPH? XIN.**
+    Phi_k=Graph(20).Phi{iter+1};
     err=1;    
     iter2=1;
-    
-    %Step2ObjectFunction=zeros(2,1);
-    Step2ObjectFunction=zeros(500,1); %% what is the purpose of the Step2ObjectFunction? Xin.
+    Step2ObjectFunction=zeros(2,1);
     for i=1:SubjectNum
         Step2ObjectFunction(iter2)=Step2ObjectFunction(iter2)+lambda_1*(p-trace(Graph(i).Phi{iter+1}'*Phi_k));
     end
@@ -71,15 +62,7 @@ while Diff(iter)>0.1&&iter<maxiter
         err=norm(Phi_increment,'fro');
         temp=0;
         for i=1:SubjectNum
-            % temp=temp+lambda_1*(p-trace(Graph(i).Phi{iter+1}'*Phi_k));
-            
-            % check NaN value added by Xin Mar-31-2022.
-            ttemp = lambda_1*(p-trace(Graph(i).Phi{iter+1}'*Phi_k));
-            if isnan(ttemp)
-                sprintf('NaN in Step2ObjectFunction found for subject %d', i);
-                continue
-            end
-            temp=temp+ttemp;
+            temp=temp+lambda_1*(p-trace(Graph(i).Phi{iter+1}'*Phi_k));
         end
         Step2ObjectFunction(iter2+1)=temp;
         iter2=iter2+1;
@@ -87,20 +70,15 @@ while Diff(iter)>0.1&&iter<maxiter
     % Convergent condition
     temp=0;
     for i=1:SubjectNum
-        %temp=temp+trace(Graph(i).Phi{iter+1}'*Graph(i).L*Graph(i).Phi{iter+1})+lambda_1*(p-trace(Graph(i).Phi{iter+1}'*Phi{iter+1}));
-        
-        % check NaN. added by Xin Mar-31-2022.
-        ttemp = trace(Graph(i).Phi{iter+1}'*Graph(i).L*Graph(i).Phi{iter+1})+lambda_1*(p-trace(Graph(i).Phi{iter+1}'*Phi{iter+1}));
-        if isnan(ttemp)
-            sprintf('NaN in ObjectiveFuncValue found for subject %d', i);
-            continue
-        end
-        temp = temp + ttemp;
+        temp=temp+trace(Graph(i).Phi{iter+1}'*Graph(i).L*Graph(i).Phi{iter+1})+lambda_1*(p-trace(Graph(i).Phi{iter+1}'*Phi{iter+1}));
     end
-    ObjectiveFuncValue(iter+1)=temp;
-    Diff(iter+1)=abs(ObjectiveFuncValue(iter+1)- ObjectiveFuncValue(iter));   
-    fprintf('The iteration: %d, the error: %f ....\n', iter, Diff(iter+1));
-   
+%     ObjectiveFuncValue(iter+1)=temp;
+%     Diff(iter+1)=abs(ObjectiveFuncValue(iter+1)- ObjectiveFuncValue(iter));   
+%     fprintf('The iteration: %d, the error: %f ....\n', iter, Diff(iter+1));
+    
+    Diff(1)=abs(temp - ObjectiveFuncValue(iter+1));
+    ObjectiveFuncValue = temp;
+    fprintf('The iteration: %d, the error: %f ....\n', iter, Diff(1));
     
     iter=iter+1;   
 end

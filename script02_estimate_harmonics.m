@@ -9,20 +9,22 @@ clear;clc
 % output_dir = strcat(work_dir, "ocd_out06_harmonics");
 % files = dir(strcat(input_dir, '/CorrelationMatrix*.mat'));
 
-work_dir = "/home/xin/Downloads/BrainImaging_UNC/";
-input_dir = strcat(work_dir, "hcp_out05_corr_matrix1");
-output_dir = strcat(work_dir, "hcp_out06_harmonics_100");
-files = dir(strcat(input_dir, '/corr_matrix_*.csv'));
+% work_dir = "/home/xin/Downloads/BrainImaging_UNC/";
+% input_dir = strcat(work_dir, "hcp_out05_corr_matrix1");
+% output_dir = strcat(work_dir, "hcp_out06_harmonics_100");
+% files = dir(strcat(input_dir, '/corr_matrix_*.csv'));
 
 % test with first n files:
-files = files(1:100);
+% files = files(1:100);
 
 % add more files here:
 
-%work_dir = "/home/xin/Downloads/BrainImaging_UNC/";
-%input_dir = strcat(work_dir, "out05_adni_corr_matrix6");
-%output_dir = strcat(work_dir, "out06_adni_harmonics");
-%files = dir(strcat(input_dir, '/corr_matrix_power264_sub-*.txt'));
+work_dir = "/home/xin/Downloads/BrainImaging_UNC/";
+input_dir = strcat(work_dir, "out05_adni_corr_matrix1");
+output_dir = strcat("adni_out02_harmonics");
+files = dir(strcat(input_dir, '/corr_matrix_power264_sub-*.txt'));
+
+files = files(1:5:end);
 
 out_file_name = 'harmonics_all.mat';
 
@@ -119,8 +121,8 @@ writematrix(CommonHarmonics, strcat(output_dir, '/CommonHarmonics.csv'))
 
 for i = 1:length(CommonHarmonics)
     
-    writematrix(CommonHarWavelets(i).Region_mask, strcat(output_dir, '/CommonHarWavelets_Region_Mask', int2str(i), '.csv'))
-    writematrix(CommonHarWavelets(i).Harmonics, strcat(output_dir, '/CommonHarWavelets_Harmonics', int2str(i), '.csv'))
+    writematrix(CommonHarWavelets(i).Region_mask, strcat(output_dir, '/CommonHarWavelets_Region_Mask', sprintf('%03d', i), '.csv'))
+    writematrix(CommonHarWavelets(i).Harmonics, strcat(output_dir, '/CommonHarWavelets_Harmonics', sprintf('%03d',i), '.csv'))
     
 end
 

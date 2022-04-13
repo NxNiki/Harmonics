@@ -1,4 +1,4 @@
-function CommonHarmonics=Estimate_glob_com_harmonics(Graph,p)
+function [CommonNetwork,CommonHarmonics]=Estimate_glob_com_harmonics(Graph,p)
 
 %% Initialize common Harmonics as the average of all subject's networks
 SubjectNum=size(Graph,2);
@@ -10,7 +10,7 @@ for i=1:SubjectNum
     CommonNetwork=CommonNetwork+Graph(i).W;
 end
 CommonNetwork=CommonNetwork/SubjectNum;
-CommonNetwork(CommonNetwork<0.02)=0;
+% CommonNetwork(CommonNetwork<0.005)=0;
 
 % CommonNetwork should already be a symmetric matrix, what is the purpose of this step?
 CommonNetwork=(CommonNetwork+CommonNetwork')/2;
@@ -23,8 +23,8 @@ Phi_ave=Phi_temp(:,1:p);
 
 %% Estimating global common harmonic waves
 % Initializing parameters
-lambda_1=0.005;
-gama=0.005/(lambda_1);   
+lambda_1=0.001;
+gama=0.001/(lambda_1);   
 iter=1;
 maxiter = 50; % add by Xin
 
@@ -44,7 +44,7 @@ Phi{1}=Phi_ave;
 while Diff(iter)>0.1&&iter<maxiter
     %Step1: Updating individual Phi
     for i=1:SubjectNum
-        Graph(i).Phi{iter+1}=Calculate_IndividualPhi(Graph(i).Phi{iter},Graph(i).L,Phi{iter},lambda_1);     
+        Graph(i).Phi{iter+1}=Calculate_IndividualPhi(Graph(i).Phi{iter},Graph(i).L,Phi{iter},lambda_1);  
     end
 
     %Step2: Updating Common Harmonics Phi    

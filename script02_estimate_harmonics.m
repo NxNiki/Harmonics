@@ -14,17 +14,19 @@ clear;clc
 % output_dir = strcat(work_dir, "hcp_out06_harmonics_100");
 % files = dir(strcat(input_dir, '/corr_matrix_*.csv'));
 
-% test with first n files:
-% files = files(1:100);
-
 % add more files here:
+data_dir = "/home/xin/Downloads/BrainImaging_UNC/";
+work_dir = "/home/xin/Downloads/Harmonics/";
 
-work_dir = "/home/xin/Downloads/BrainImaging_UNC/";
-input_dir = strcat(work_dir, "out05_adni_corr_matrix1");
+% use training set to estimate harmonics wavelets:
+train_set = strcat(work_dir, 'adni_out01_time_signal_test_train_split/train_set_corr_matrix.csv');
+
+input_dir = strcat(data_dir, "out05_adni_corr_matrix");
 output_dir = strcat("adni_out02_harmonics");
-files = dir(strcat(input_dir, '/corr_matrix_power264_sub-*.txt'));
 
-files = files(1:5:end);
+
+%% read training data:
+files = readtable(train_set, 'Delimiter', ',', 'ReadVariableNames', 0);
 
 out_file_name = 'harmonics_all.mat';
 
@@ -38,22 +40,13 @@ Graph = struct;
 GroupNum = 1;
 p=55;% p is the number of eignvectors %55
 
-for i = 1:length(files)
-
-    % for .mat files:
-%     load(strcat(files(i).folder, '/', files(i).name))
-%     temp = CorrMatrix;
+for i = 1:size(files, 1)
     
-    % for txt files:
-    temp = readmatrix(strcat(files(i).folder, '/', files(i).name));
-    temp = temp(2:end,:);
+    f = files{i, 1}{1};
+    temp = readmatrix(f);
+    temp = temp(2:end,:); % remove header in correlation matrix.
     
-    %size(temp)
-    
-    % out_file_name = strcat('PreprocessCorrMat', files(i).name(18:end))
-    %subject_id = files(i).name(22:end-4)
-    %subject_id = files(i).name(13:end-4);
-    subject_id = files(i).name(18:end-4);
+    subject_id = f(strfind(f, 'sub-'): strfind(f, '.txt')-1);
     
     % check for NaNs:
     if any(isnan(temp), 'all')
@@ -111,7 +104,7 @@ fprintf('Done!\n')
 %% Identifying region-adaptive common harmonic wavelets
 fprintf('Identifying region-adaptive common harmonic wavelets!\n');
 % load(strcat(output_dir, '/', out_file_name), 'Graph')
-CommonHarWavelets=Identify_glob_com_har_wavelets(Graph);
+CommonHarWavelets=Identify_glob_com_har_wavelets(Graph, CommonHarmonics);
 save(strcat(output_dir, '/', out_file_name), 'CommonHarWavelets', 'CommonHarmonics', '-append')
 fprintf('Finished!\n')
 

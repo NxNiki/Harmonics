@@ -1,20 +1,13 @@
-function CommonHarWavelets=Identify_glob_com_har_wavelets(Graph)
+function CommonHarWavelets=Identify_glob_com_har_wavelets(Graph,CommonNetwork)
 %% Identify region-adaptive harmonic wavelets for each sample
 % Constructing common network
 SubjectNum=size(Graph,2);
 NodeNum=size(Graph(1).W,1);
-CommonNetwork=zeros(NodeNum);
-for i=1:SubjectNum
-    CommonNetwork=CommonNetwork+Graph(i).W;
-end
-CommonNetwork=CommonNetwork/SubjectNum;
-CommonNetwork(CommonNetwork<0.002)=0;
-CommonNetwork=(CommonNetwork+CommonNetwork')/2;
 % Initialize parameters 
 beta_1=30;
 beta_2=0;
 k=10; % k is the number of eignvectors of common harmonic wavelets
-gama=0.005;
+gama=0.001;
 GlobalComHarmonics=Graph(1).GlobalComHarmonics;
 %% Identifying the region-adaptive common harmonic wavelets of each node.
 CommonHarWavelets=struct;

@@ -1,0 +1,134 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with`a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{apacite}
+\usepackage{authblk}
+\usepackage{setspace}
+\usepackage{xcolor}
+
+% \usepackage[utf8]{inputenc}
+% \graphicspath{ {./figures/} }
+% \usepackage{subcaption}
+
+% \usepackage{lineno}
+% \linenumbers
+
+\title{Investigating Biomarkers for Alzheimer’s disease with Harmonic Waves on Stiefel Manifold in Resting-state Brain Network}
+
+\author[1]{Xin Niu}
+\author[1*]{Guorong Wu}
+
+% \author[1$\dag$]{Xin Niu}
+% \author[1*$\dag$]{Guorong Wu}
+% \author[2]{Author Three}
+% \author[1,2]{Author Four}
+
+%%%%%% Affiliations %%%%%%
+\affil[1]{School of Medicine, North Carolina University at Chapel Hill, Chapel Hill, USA.}
+% \affil[2]{Department of Astronomy, B University, City, Country.}
+\affil[*]{Corresponding author. Email: guorong\textunderscore wu@med.unc.edu}
+% \affil[$\dag$]{These authors contributed equally to this work.}
+
+%%%%%% Date %%%%%%
+% Date is optional
+% \date{Feb-20-2022}
+
+%%%%%% Spacing %%%%%%
+% Use paragraph spacing of 1.5 or 2 (for double spacing, use command \doublespacing)
+\onehalfspacing
+
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{Introduction}
+
+Alzheimer's disease (AD) is a neurodegenerative disorder that affects the aging population with cognitive decline in various domains. Memory deficit is the most prominent cognitive decline in AD patients. However, other symptoms and co-morbidities are also involved \cite{frozza2018challenges}. For example, additional neuropsychiatric alterations (e.g., depression and apathy) arise as AD progresses \cite{lanctot2017neuropsychiatric}, as well as other non-cognitive symptoms such as impaired sleep and appetite \cite{ishii2015metabolic}. Furthermore, there is compelling evidence that additional brain regions, beyond those involved in memory, are also affected in AD \cite{frozza2018challenges}. Consequently, the diagnosis, prognosis, and treatment of AD are challenged by its heterogeneity in clinical symptoms and pathology \cite{habib2020disease, vogel2021four}.
+
+AD is characterized by pathological hallmarks in brain including deposits of extracellular $\beta$-amyloid protein (A$\beta$), plaques of degenerating neurons, intracellular deposits of hyperphosphorylated tau protein in the form of neurofibrillary tangles, activation of microglia, and loss of neurons and synapses \cite{reitz2015genetic}. Magnetic resonance imaging (MRI) studies showed pervasive brain atrophy in cortex, hippocampus, and hypothalamus \cite{loskutova2010reduced, hall2008basal}. In addition, positron emission tomography (PET) studies have reported deficits in glucose metabolism in the hypothalamus and limbic system of MCI or AD subjects \cite{nestor2003limbic, cross2013loss}. AD involves these gradual pathological changes in the brain that take several years to decades before manifesting with clinical symptoms \cite{sperling2011toward}. Given the numerous pathological biomarkers, it is promising brain imaging biomarkers exist as a convenient tool for early diagnosis. 
+
+Recent studies indicate AD is related to the disconnection of the brain network, instead of a dysfunction of isolated brain regions \cite{pievani2014brain}, researchers has shifted their focus from the static biomakers to the dynamic propagation of disease related alterations in AD \cite{vogel2021four}. To our knowledge, most studies on brain imaging biomarkers adopt conventional Euclidian operations and thus missed the geometry patterns of the cortical surfaces of the brain network. Recent studies used connectome harmonics as a new representation for macroscale cortical activity of the human brain \cite{atasoy2016human, glomb2021functional}. However, there is no well-accepted way to synthesize individual harmonics into a common one. One intuitive way is to first average the individual connectivity networks before the decomposition of harmonics. However as the averaging is computed on the Euclidian space, the resulted common harmonics is not guaranteed to be on the same Stiefel manifold as the individual ones. Our resent work showed theoretical limitations of this approach and proposed a noval method to combine individual harmonics into a common one on the Stiefel manifold.  In the current work, we extract common harmonic waves from the functional connectivity network which detects the frequency-based alterations and its propagation in brain networks on AD patients.
+
+\section{Plans and progress:}
+
+Short term plan: 
+fMRI preprocessing:
+T1w images ready, still working on the cpac software setting.
+Harmonics paper and running code on OCD data:
+Now finished extracting individual harmonic wavelets.
+
+paper reading
+
+Long term plan:
+finished manuscript writing of the AD harmonics paper before Christmas.
+
+Notes:
+
+Relatively accurate diagnosis and timely therapies will likely be achieved when neuropsychological, fluid and imaging biomarkers are used in combination \cite{blennow2017review, dubois2016preclinical, viola2015amyloid}.
+
+the principle of harmonicity, ubiquitous in nature, also underlies functional cortical organization in the human brain\cite{glomb2021functional}.
+
+
+\section{Methods}
+
+\subsection{Brain network and individual harmonics waves}
+
+The resting state functional networks are encoded as a graph $\mathcal{G}=(V,\mathcal{E},\boldsymbol{W})$, with node set $V=\{v_i|i\in  1,...,N\}$ representing $N$ brain regions and edge set $E=\{e_{ij}|(v_i, v_j) \in V \times V\}$ representing connection strength between each pair of brain regions. Let matrix $\boldsymbol{W}=[w_{ij}]_{N \times N} \in R^{N \times N}$ be the symmetric adjacency matrix with $w_{ij}$ being the Pearson's correlation between time signals of of brain region $i$ and $j$. Then, we compute the graph Laplacian matrix $L$ on each connectivity matrix:
+\begin{equation}
+    L = D-W
+\end{equation} 
+where $D_{ij} = \sum_{j=1}^Nw_{ij}$ is the total connectivity degree for the $i$th brain region.
+
+Similar to previous work \cite{atasoy2016human}, we calculate a set of individual harmonics waves using eigenvalue decomposition of the graph Laplacian:
+\begin{equation}
+    \min_{\Phi\in R^{n\times n}} tr(\Phi^TL\Phi),\quad s.t.\quad \Phi^T\Phi = I_P
+\end{equation}
+where $tr(\cdot)$ is the trace operator and $I_p$ denotes the $P$. The resulting eigenvectors are sorted in increasing order by the corresponding eigenvalues. Similar to our previous work \cite{chen2022characterizing}, we selected the first P harmonic waves as high frequency wavelets are sensitive to possible noise. Thus, the harmonic set $\Phi$ is a $N \times P$ matrix which can be considered as an instance drawn from Stiefel manifold \cite{chikuse2003statistics}.  
+
+\subsection{Global common harmonic waves}
+
+We next estimate the global common harmonic wave, which is defined as the mean $\overline{\Phi}$ of the individual harmonic waves $\{\Phi_s|s=1,...,m\}$ estimated with the method described above. We optimize the following objective function to ensure the global common harmonic wave $\overline{\Phi}$ is near the manifold center with the shortest geodesic distance to the individual harmonic waves $\{\Phi_s\}$:
+
+\begin{equation}
+    \min_{\{\Phi_s\}, \overline{\Phi}}F_{\{\Phi_s\},\overline{\Phi}} = \min_{\{\Phi_s\}, \overline{\Phi}} \sum_{s=1}^m\{tr(\Phi_s^T L_s \Phi_s) + \lambda(P-tr(\Phi_s^T \overline{\Phi})) \}, \quad s.t \quad \forall s: \Phi_s^T \Phi_s = I_P
+\end{equation}
+where $\lambda$ stands for the scalar balancing topological structure and centralization degree.
+
+
+
+
+\section{Discussion}
+
+
+
+
+
+
+
+% \begin{figure}
+% \centering
+% \includegraphics[width=1\textwidth]{Figure1.png}
+% \caption{\label{fig:fig1}This frog was uploaded via the file-tree menu.}
+% \end{figure}
+
+
+
+\bibliographystyle{apacite}
+\bibliography{sample}
+
+\end{document}

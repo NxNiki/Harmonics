@@ -55,7 +55,7 @@ for i = 1:size(files, 1)
     end
     
     if ~isempty(temp)
-        temp(temp<0.007)=0;
+        temp(temp<0.007)=0; % all correlations less than .007 are removed.
         v=sum(temp,2);
 
         if sum(v==0)==0
@@ -90,7 +90,7 @@ save(strcat(output_dir, '/', out_file_name), 'Graph')
 %% Estimating global common harmonic waves
 load(strcat(output_dir, '/', out_file_name), 'Graph')
 fprintf('Estimating global common harmonic waves!\n');
-CommonHarmonics=Estimate_glob_com_harmonics(Graph,p);
+CommonHarmonics=Estimate_glob_com_harmonics(Graph, p);
 % save(strcat(output_dir, '/', out_file_name), 'CommonHarmonics', '-append')
 fprintf('Done!\n')
 

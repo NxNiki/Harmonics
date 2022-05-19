@@ -1,5 +1,7 @@
 %% load brain connectivity network
 
+% NOTE: to prevent system crashing, do not process more than 100 files!
+
 close all;
 clear;clc
 
@@ -10,6 +12,7 @@ work_dir = "/home/xin/Downloads/Harmonics/";
 
 % use training set to estimate harmonics wavelets:
 files = dir(strcat(input_dir, '/corr_matrix*.csv'));
+files = files(1:6:end);
 
 output_dir = "hcp_out02_harmonics";
 out_file_name = 'harmonics_all.mat';

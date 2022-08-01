@@ -56,14 +56,14 @@ for i = 1:size(files, 1)
     
     if ~isempty(temp)
         temp(temp<0.007)=0; % all correlations less than .007 are removed.
-        v=sum(temp,2);
+        v=sum(temp, 2);
 
         if sum(v==0)==0
             %disp('compute harmonics...')
             D=diag(v); 
             temp=D^-1*temp;
             Graph(GroupNum).W=(temp+temp')/2; %Adjacency matrix
-            Graph(GroupNum).D=diag(sum(Graph(GroupNum).W,2)); % Degree matrix
+            Graph(GroupNum).D=diag(sum(Graph(GroupNum).W, 2)); % Degree matrix
             Graph(GroupNum).L=Graph(GroupNum).D-Graph(GroupNum).W;% Laplacian matrix
             [Phi_temp,value]=eig(Graph(GroupNum).L);
 
@@ -71,8 +71,8 @@ for i = 1:size(files, 1)
                 Phi_temp=-Phi_temp;
             end
             
-            Graph(GroupNum).Phi{1}=Phi_temp(:,1:p);
-            Graph(GroupNum).Eigenvalue=value(1:p,1:p);
+            Graph(GroupNum).Phi{1}=Phi_temp(:, 1:p);
+            Graph(GroupNum).Eigenvalue=value(1:p, 1:p);
             Graph(GroupNum).SubjectID=subject_id;
             %Graph(GroupNum).PTID=Data_profile{i,2};
             %Graph(GroupNum).VISCODE=Data_profile{i,4};
